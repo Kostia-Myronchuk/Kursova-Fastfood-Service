@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Login/Register - Fast Food Website</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header-container">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo" />
+        </div>
+        <nav class="menu" style="margin: 0 auto">
+          <ul>
+            <li class="menu-item"><a href="index.html">Home</a></li>
+            <li class="menu-item"><a href="about.html">About Us</a></li>
+            <li class="menu-item"><a href="cart.html">Cart</a></li>
+            <li class="menu-item" id="login-register">
+              <a href="login.html">Login/Register</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="login">
+      <div class="container">
+        <h1 class="login-title">Login or Register</h1>
+        <div class="login-content">
+          <div class="login-form">
+            <h2>Login</h2>
+            <form id="login-form">
+              <label for="login-email">Email:</label>
+              <input
+                type="email"
+                id="login-email"
+                name="login-email"
+                required
+              />
+              <label for="login-password">Password:</label>
+              <input
+                type="password"
+                id="login-password"
+                name="login-password"
+                required
+              />
+              <button type="submit">Login</button>
+            </form>
+          </div>
+          <div class="register-form">
+            <h2>Register</h2>
+            <form id="register-form">
+              <label for="register-username">Username:</label>
+              <input
+                type="text"
+                id="register-username"
+                name="register-username"
+                required
+              />
+              <label for="register-email">Email:</label>
+              <input
+                type="email"
+                id="register-email"
+                name="register-email"
+                required
+              />
+              <label for="register-password">Password:</label>
+              <input
+                type="password"
+                id="register-password"
+                name="register-password"
+                required
+              />
+              <button type="submit">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo" />
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="rights">All rights reserved © 2024</div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const loginRegisterItem = document.getElementById("login-register");
+        if (user) {
+          loginRegisterItem.innerHTML =
+            '<a href="profile.html">Особистий кабінет</a>';
+        }
+      });
+
+      document
+        .getElementById("register-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const username = document.getElementById("register-username").value;
+          const email = document.getElementById("register-email").value;
+          const password = document.getElementById("register-password").value;
+
+          const response = await fetch("http://localhost:4000/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, email, password }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem("user", JSON.stringify(data.user));
+            document.getElementById("login-register").innerHTML =
+              '<a href="profile.html">Особистий кабінет</a>';
+            alert("Registration successful!");
+            window.location.href = "index.html";
+          } else {
+            alert("Registration failed!");
+          }
+        });
+
+      document
+        .getElementById("login-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const email = document.getElementById("login-email").value;
+          const password = document.getElementById("login-password").value;
+
+          const response = await fetch("http://localhost:4000/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email, password }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            localStorage.setItem("user", JSON.stringify(data.user));
+            localStorage.setItem("isAdmin", JSON.stringify(data.isAdmin));
+            document.getElementById("login-register").innerHTML =
+              '<a href="profile.html">Особистий кабінет</a>';
+            alert("Login successful!");
+            window.location.href = "index.html";
+          } else {
+            alert("Login failed!");
+          }
+        });
+    </script>
+  </body>
+</html>

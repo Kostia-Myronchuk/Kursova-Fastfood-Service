@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Profile - Fast Food Website</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header-container">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo" />
+        </div>
+        <nav class="menu" style="margin: 0 auto">
+          <ul>
+            <li class="menu-item"><a href="index.html">Home</a></li>
+            <li class="menu-item"><a href="about.html">About Us</a></li>
+            <li class="menu-item"><a href="cart.html">Cart</a></li>
+            <li class="menu-item" id="login-register">
+              <a href="profile.html">Profile</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="profile">
+      <div class="container">
+        <h1 class="profile-title">Your Profile</h1>
+        <div class="profile-content">
+          <h2>Your Orders</h2>
+          <div id="orders"></div>
+          <div class="profile-buttons">
+            <button class="button" id="logout-button">Logout</button>
+            <button class="button" id="delete-account-button">
+              Delete Account
+            </button>
+            <button
+              class="button"
+              id="admin-panel-button"
+              style="display: none"
+            >
+              Admin Panel
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo" />
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="rights">All rights reserved © 2024</div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", async function () {
+        const user = JSON.parse(localStorage.getItem("user"));
+        const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+
+        if (!user) {
+          alert("Please login first!");
+          window.location.href = "login.html";
+          return;
+        }
+
+        const response = await fetch(
+          `http://localhost:4000/orders/${user.user_id}`
+        );
+        const orders = await response.json();
+
+        const ordersContainer = document.getElementById("orders");
+        if (orders.length === 0) {
+          ordersContainer.innerHTML = "<p>You have no orders yet.</p>";
+        } else {
+          orders.forEach((order) => {
+            const orderElement = document.createElement("div");
+            orderElement.className = "order";
+            orderElement.innerHTML = `
+                        <div class="order-date">Order Date: ${order.order_date}</div>
+                        <div class="order-total">Total Amount: ${order.total_amount} UAH</div>
+                        <div class="order-status">Status: ${order.status}</div>
+                    `;
+            ordersContainer.appendChild(orderElement);
+          });
+        }
+
+        console.log(isAdmin);
+
+        if (isAdmin) {
+          const adminButton = document.getElementById("admin-panel-button");
+          adminButton.style.display = "inline-block";
+          adminButton.addEventListener("click", function () {
+            window.location.href = "admin.html";
+          });
+        }
+
+        document
+          .getElementById("logout-button")
+          .addEventListener("click", function () {
+            localStorage.removeItem("user");
+            alert("Logged out successfully!");
+            window.location.href = "index.html";
+          });
+
+        document
+          .getElementById("delete-account-button")
+          .addEventListener("click", async function () {
+            if (
+              confirm(
+                "Are you sure you want to delete your account? This action cannot be undone."
+              )
+            ) {
+              const response = await fetch(
+                `http://localhost:4000/users/${user.user_id}`,
+                {
+                  method: "DELETE",
+                }
+              );
+
+              if (response.ok) {
+                localStorage.removeItem("user");
+                alert("Account deleted successfully!");
+                window.location.href = "index.html";
+              } else {
+                alert("Failed to delete account.");
+              }
+            }
+          });
+      });
+    </script>
+  </body>
+</html>

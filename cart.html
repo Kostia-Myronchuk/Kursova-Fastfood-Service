@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Cart - Fast Food Website</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header-container">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo" />
+        </div>
+        <nav class="menu" style="margin: 0 auto">
+          <ul>
+            <li class="menu-item"><a href="index.html">Home</a></li>
+            <li class="menu-item"><a href="about.html">About Us</a></li>
+            <li class="menu-item"><a href="cart.html">Cart</a></li>
+            <li class="menu-item" id="login-register">
+              <a href="login.html">Login/Register</a>
+            </li>
+            <li class="menu-item" id="admin-panel" style="display: none">
+              <a href="admin.html">Admin Panel</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <section class="cart">
+      <div class="container">
+        <h1 class="cart-title">Your Cart</h1>
+        <div class="cart-content">
+          <div id="cart-items"></div>
+          <p id="empty-cart-message">Your cart is currently empty.</p>
+          <button class="button" id="checkout-button">Checkout</button>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="container footer-container">
+        <div class="logo">
+          <img src="images/logo.png" alt="Logo" />
+        </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Contact Us</a>
+        </div>
+        <div class="rights">All rights reserved © 2024</div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const cartItemsContainer = document.getElementById("cart-items");
+        const emptyCartMessage = document.getElementById("empty-cart-message");
+        const checkoutButton = document.getElementById("checkout-button");
+        const user = JSON.parse(localStorage.getItem("user"));
+        const isAdmin = JSON.parse(localStorage.getItem("isAdmin"));
+        const loginRegisterItem = document.getElementById("login-register");
+        const adminPanelItem = document.getElementById("admin-panel");
+
+        if (user) {
+          loginRegisterItem.innerHTML =
+            '<a href="profile.html">Особистий кабінет</a>';
+          if (isAdmin) {
+            adminPanelItem.style.display = "block";
+          }
+        }
+
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        function updateCartDisplay() {
+          if (cart.length === 0) {
+            emptyCartMessage.style.display = "block";
+            cartItemsContainer.style.display = "none";
+            checkoutButton.style.display = "none";
+          } else {
+            emptyCartMessage.style.display = "none";
+            cartItemsContainer.style.display = "block";
+            checkoutButton.style.display = "block";
+            cartItemsContainer.innerHTML = "";
+            cart.forEach((item, index) => {
+              const itemElement = document.createElement("div");
+              itemElement.className = "cart-item";
+              itemElement.innerHTML = `
+                            <div class="cart-item-image"><img src="${item.image_url}" alt="Image of ${item.name}" /></div>
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-quantity">Quantity: ${item.quantity}</div>
+                            <div class="cart-item-price">Price: ${item.price} UAH</div>
+                            <button class="remove-item-button" data-index="${index}">Remove</button>
+                        `;
+              cartItemsContainer.appendChild(itemElement);
+            });
+
+            document
+              .querySelectorAll(".remove-item-button")
+              .forEach((button) => {
+                button.addEventListener("click", function () {
+                  const itemIndex = this.dataset.index;
+                  cart.splice(itemIndex, 1);
+                  localStorage.setItem("cart", JSON.stringify(cart));
+                  updateCartDisplay();
+                });
+              });
+          }
+        }
+
+        updateCartDisplay();
+
+        checkoutButton.addEventListener("click", async function () {
+          if (!user) {
+            alert("Please login first.");
+            return;
+          }
+
+          const order = {
+            items: cart,
+            total_amount: cart.reduce(
+              (total, item) => total + item.price * item.quantity,
+              0
+            ),
+            status: "Pending",
+            user_id: user.user_id, // передача user_id у запиті
+          };
+
+          try {
+            const response = await fetch("http://localhost:4000/orders", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(order),
+            });
+
+            if (response.ok) {
+              alert("Дякуємо! Ваше замовлення уже в процесі");
+              localStorage.removeItem("cart");
+              window.location.href = "index.html";
+            } else {
+              const error = await response.json();
+              console.error("Error:", error.message);
+              alert("Failed to place order: " + error.message);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to place order: " + error.message);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

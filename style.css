@@ -1,0 +1,491 @@
+* {
+  padding: 0;
+  margin: 0;
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url("fonts/Roboto.ttf");
+}
+
+@font-face {
+  font-family: Roboto;
+  src: url("fonts/Robotobold.ttf");
+  font-weight: bold;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+}
+
+.header {
+  background: #444; /* Darker background color for better contrast */
+  color: #fff;
+  padding: 15px 0;
+}
+
+.header .header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo img {
+  width: 120px; /* Fixed width for the logo */
+  height: auto; /* Keep aspect ratio */
+}
+
+.menu ul {
+  list-style: none;
+  display: flex;
+  position: relative;
+}
+
+.menu-item {
+  margin-right: 20px;
+  position: relative;
+}
+
+.menu-item a {
+  font-size: 15px;
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+}
+
+.menu-item a:hover {
+  background: #575757;
+  border-radius: 5px;
+}
+
+.menu-item .dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #444;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1000; /* Higher z-index to appear above all content */
+  border-radius: 5px;
+}
+
+.menu-item .dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.menu-item .dropdown-content a:hover {
+  background-color: #575757;
+}
+
+.menu-item:hover .dropdown-content {
+  display: block;
+}
+
+.main {
+  background-image: url("images/background.png");
+  background-position: center;
+  background-size: cover;
+  padding: 104px 0 154px 0;
+}
+
+.main-info {
+  max-width: 855px;
+  background: rgba(255, 255, 255, 0.8); /* Light background for better readability */
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.main-title {
+  font-weight: bold;
+  font-size: 60px; /* Reduced size for better readability */
+  line-height: 70px;
+  color: #333; /* Darker color for better contrast */
+  margin-bottom: 20px;
+}
+
+.main-text {
+  font-size: 18px; /* Slightly larger font size */
+  line-height: 130%;
+  color: #333; /* Darker color for better contrast */
+  margin-bottom: 20px;
+}
+
+.about, .cart, .login {
+  padding: 50px 0;
+}
+
+.about-title, .cart-title, .login-title {
+  font-size: 36px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.about-content, .cart-content, .login-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.login-form, .register-form {
+  margin: 20px 0;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #f9f9f9;
+}
+
+.login-form h2, .register-form h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+.login-form form, .register-form form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-form label, .register-form label {
+  margin-bottom: 5px;
+}
+
+.login-form input, .register-form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.login-form button, .register-form button {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background: #444;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.login-form button:hover, .register-form button:hover {
+  background: #575757;
+}
+
+.menu-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.menu-item {
+  width: 300px; /* Fixed width for consistency */
+  margin: 20px;
+  text-align: center;
+  background: #ffffff00; /* Transparent background */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-item-image {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.menu-item-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.menu-item-description {
+  font-size: 16px;
+  margin: 10px 0;
+  padding: 0 10px; /* Padding for better spacing */
+}
+
+.menu-item-price {
+  font-size: 18px;
+  color: #e91e63;
+  margin: 10px 0;
+  font-weight: bold; /* Bold price for emphasis */
+}
+
+.menu-item-quantity {
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item-quantity label {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.menu-item-quantity input {
+  width: 60px;
+  padding: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.menu-item-add-to-cart {
+  margin: 10px 0;
+}
+
+.category-header {
+  width: 100%;
+  text-align: center;
+  font-size: 24px;
+  margin: 20px 0;
+  background: #f8f8f8; /* Light background for category header */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.footer {
+  background: #333;
+  color: #fff;
+  padding: 2px 0; /* Зменшений padding */
+  position: fixed; /* Фіксована позиція */
+  bottom: 0; /* Відступ від нижнього краю */
+  width: 100%; /* Ширина на всю сторінку */
+  z-index: 100; /* Високий z-index для уникнення перекриття */
+}
+
+.footer .footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer .logo img {
+  width: 60px; /* Зменшена ширина логотипу */
+  height: auto; /* Збереження пропорцій */
+}
+
+.footer-links {
+  display: flex;
+  gap: 10px; /* Зменшений розрив між посиланнями */
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 14px; /* Зменшений розмір шрифту */
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.rights {
+  font-size: 12px; /* Зменшений розмір шрифту */
+}
+
+/* Стилі для кнопок */
+.button {
+  background-color: #ff4757;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ff6b81;
+}
+
+/* Обмеження розміру меню товарів у кошику */
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.cart-item-image img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.cart-item-name {
+  flex: 1;
+}
+
+.cart-item-quantity,
+.cart-item-price {
+  width: 100px;
+  text-align: center;
+}
+
+.remove-item-button {
+  background-color: #ff4757;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-item-button:hover {
+  background-color: #ff6b81;
+}
+
+/* Стилі для модального вікна */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+  padding-top: 60px;
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  text-align: left;
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.modal input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.modal button {
+  width: 100%;
+  padding: 10px;
+  background-color: #ff4757;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #ff6b81;
+}
+
+.profile {
+  padding: 20px 0;
+}
+
+.profile-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+}
+
+.profile-content {
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.order {
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.order-date,
+.order-total,
+.order-status {
+  margin: 5px 0;
+}
+
+.profile-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button {
+  background-color: #ff4757;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #ff6b81;
+}
